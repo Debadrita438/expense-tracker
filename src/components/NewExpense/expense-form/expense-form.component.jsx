@@ -1,36 +1,19 @@
 import { useState } from 'react';
 import './expense-form.styles.css';
 
-const ExpenseForm = ({ onSaveExpenseData }) => {
+const ExpenseForm = ({ onCancelEditing, onSaveExpenseData }) => {
     const [newTitle, setNewTitle] = useState('');
     const [newAmount, setNewAmount] = useState('');
     const [newDate, setNewDate] = useState('');
-    // const [userInput, setUserInput] = useState({
-    //     newTitle: '',
-    //     newAmount: '',
-    //     newDate: ''
-    // });
 
     const titleChangeHandler = event => {
         setNewTitle(event.target.value);
-        // setUserInput({ ...userInput, newTitle: event.target.value });
-        // setUserInput(prevState => {                  <------ Safer way
-        //     return {...prevState, newTitle: event.target.value }
-        // });
     }
     const amountChangeHandler = event => {
         setNewAmount(event.target.value);
-        // setUserInput({ ...userInput, newAmount: event.target.value });
-        // setUserInput(prevState => { 
-        //     return {...prevState, newAmount: event.target.value }
-        // });
     }
     const dateChangeHandler = event => {
         setNewDate(event.target.value);
-        // setUserInput({ ...userInput, newDate: event.target.value });
-        // setUserInput(prevState => { 
-        //     return {...prevState, newDate: event.target.value }
-        // });
     }
 
     const submitHandler = event => {
@@ -38,13 +21,14 @@ const ExpenseForm = ({ onSaveExpenseData }) => {
 
         const expenseData = {
             title: newTitle,
-            amount: newAmount,
+            amount: +newAmount,
             date: new Date(newDate)
         }
         onSaveExpenseData(expenseData);
         setNewTitle('');
         setNewAmount('');
         setNewDate('');
+        onCancelEditing();
     }
 
     return (
@@ -64,6 +48,7 @@ const ExpenseForm = ({ onSaveExpenseData }) => {
                 </div>
             </div>
             <div className='new-expense__actions'>
+                <button type='button' onClick={onCancelEditing}>Cancel</button>
                 <button type='submit'>Add Expense</button>
             </div>
         </form>

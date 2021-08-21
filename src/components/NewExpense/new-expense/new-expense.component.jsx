@@ -1,7 +1,11 @@
+import { useState } from 'react';
+
 import ExpenseForm from '../expense-form/expense-form.component';
 import './new-expense.styles.css';
 
 const NewExpense = ({ onAddExpense }) => {
+    const [isToggle, setIsToggle] = useState(false);
+
     const saveExpenseDataHandler = newExpenseData => {
         const expenseData = {
             ...newExpenseData,
@@ -9,9 +13,23 @@ const NewExpense = ({ onAddExpense }) => {
         }
         onAddExpense(expenseData);
     }
+
+    const startEditing = () => {
+        setIsToggle(true);
+    }
+
+    const stopEditing = () => {
+        setIsToggle(false);
+    }
+
     return (
         <div className='new-expense'>
-            <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} />
+            {
+                isToggle ?
+                <ExpenseForm onCancelEditing={stopEditing} onSaveExpenseData={saveExpenseDataHandler} />
+                :
+                <button onClick={startEditing}>Add New Expense</button>
+            }
         </div>
     );
 }
